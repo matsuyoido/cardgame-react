@@ -1,0 +1,7 @@
+{
+  // presetsは後ろから順に適応される
+  // つまり、TypeScript ⇒ react ⇒ javascript の順に変換するように設定
+  "presets": [
+    "@babel/preset-env", "@babel/preset-react", "@babel/preset-typescript"
+  ]
+}
