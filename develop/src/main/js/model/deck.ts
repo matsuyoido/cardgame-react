@@ -213,6 +213,7 @@ class Deck {
             count: 2
         }
     ];
+    public static readonly TOTAL_CARD_COUNT = Deck.LINE_UP.map(card => card.count).reduce((accumulator, currentValue) => accumulator + currentValue);
     private _deck: Card[] = [];
 
     private constructor() {}

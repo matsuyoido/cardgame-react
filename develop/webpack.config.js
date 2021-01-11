@@ -51,7 +51,24 @@ return isDev ?
 				}
 			],
 			exclude: /node_modules/
-		}
+		},
+		{
+			test: /\.s[ca]ss$/,
+			use: [
+			  "style-loader", // creates style nodes from JS strings
+			  {
+				loader: "css-loader", // translates CSS into
+				options: {
+					esModule: true,
+					modules: {
+						exportLocalsConvention: 'dashesOnly'
+					}
+				}
+			  },
+			  "postcss-loader", // Autoprefixer
+			  "sass-loader" // compiles Sass to CSS, using Node Sass by default
+			],
+		  }
 		],
 	},
 	resolve: {

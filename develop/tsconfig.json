@@ -9,7 +9,12 @@
 			"dom", "es2020"
 		],
 		"removeComments": true,
-		"outDir": "src/test"
+		"outDir": "src/test",
+		"plugins": [
+			{
+				"name": "typescript-plugin-scss-modules"
+			}
+		]
 	},
 	"include": [
 		"src/main/**/*"

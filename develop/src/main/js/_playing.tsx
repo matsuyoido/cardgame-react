@@ -1,37 +1,15 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { Player } from './model/player';
 import { Deck } from './model/deck';
 import { Card, OrderCategory } from './model/card';
 import GameRule from './model/gameRule';
 import * as shortid from 'shortid';
+import UrlMap from './url';
 
-/*
-    3. ゲーム未開始（/play/{UUID}）: 2カラムレイアウト
-        1. 参加人数表示(右側)
-            1. 参加メンバー名
-        1. ゲーム開始ボタン(右側)
-        1. ルール表示(左側)
-    4. ゲーム中(プレイヤー)（/play/{UUID}）: 1カラムレイアウト
-        1. 前回の合計値宣言数表示(最上部:左側)
-        1. 出札表示(最上部)
-            1. hoverすると全部見える(初期実装は全部見えてる状態でOK)
-        1. 参加人数表示(上から2番目)
-            1. 参加メンバー名
-            1. 誰の番か表示
-        1. カード表示(上から3番目)
-            - 順番になると、カードの下に場に出すボタンが出る
-            - モーダルみたいなので、数値入力フォームが出る(×を押すと、カード選択が戻る)
-        1. ルール表示(最下部)
-    5. ゲーム中(観戦者)（/play/{UUID}）
-        1. 前回の合計値宣言数表示(最上部:左側)
-        1. 出札表示(最上部)
-            1. hoverすると全部見える(初期実装は全部見えてる状態でOK)
-        1. 参加人数表示(上から2番目)
-            1. 参加メンバー名
-            1. 誰の番か表示
-        1. ルール表示(最下部)
-    6. ゲーム終了（/play/{UUID}）
-*/
+import { CardDesign } from './component/PlayCard';
+import PlayCard from './component/PlayCard';
+import styles from '../css/_board.scss';
 
 interface PropType {
     playerName: string;
@@ -56,35 +34,46 @@ interface StatType {
     pullOutCards: PullOutCardInfo[];
 }
 
-
-//     render() {
-//         if (!this.board.isPlaying()) {
-//             return (<div>
-// <nav>
-//     <p>{this.props.playerName}</p>
-// </nav>
-// <section>
-//     <aside>
-//         {this.renderGameDescription()}
-//     </aside>
-//     <button onClick={e => this.board.join(this.props.roomId, new Player(this.props.playerName))}>Start</button>
-//     <p>hello game</p>
-//     <ul>{this.renderPlayers(this.state.players.map(info => info.player.name))}</ul>
-// </section>
-//                     </div>);
-//         } else {
-//             return (<div>
-// <nav>
-//     <p>{this.props.playerName}</p>
-//     <button>Exit room</button>
-// </nav>
-// <section>
-//     <p>hello game</p>
-// </section>
-//                     </div>);
-//         }
-//     }
-
+const GameDescription = (): JSX.Element => {
+    const [isView, setViewable] = useState(false);
+    const header = (<>
+<h3>ゲーム説明 <span style={{ cursor: 'pointer' }} onClick={e => setViewable(!isView)}>{isView ? '―' : '＋'}</span></h3>
+    </>);
+    if (isView) {
+        return (<div>
+{header}
+<h4>概要</h4>
+<dl>
+    <dt>ゲーム名</dt><dd>Neu(ノイ)</dd>
+    <dt>プレイ人数</dt><dd>2人以上</dd>
+    <dt>手札</dt><dd>最大3枚</dd>
+    <dt>全カード数</dt><dd>{Deck.TOTAL_CARD_COUNT}枚</dd>
+</dl>
+<h4>進め方</h4>
+<ol>
+    <li>プレイヤーが手札からカードを場札に出す</li>
+    <li>場札にあるカードの合計を宣言する（ビデオ通話などで）</li>
+    <li>場札の合計が101を超えると敗北</li>
+    <li>101未満であれば、次のプレイヤーが手札からカードを場札に出す</li>
+</ol>
+<h4>カードの種類</h4>
+<dl>
+    <dt>数値</dt><dd>それぞれの数を足したり引いたりする</dd>
+    <dt>101</dt><dd>合計に関係なく合計を101にする</dd>
+    <dt>PASS</dt><dd>次プレイヤーに順番を回す</dd>
+    <dt>TURN</dt><dd>順番を逆回りにする</dd>
+    <dt>SHOT</dt><dd>次プレイヤーを指名する</dd>
+    <dt>DOUBLE</dt><dd>次プレイヤーがカードを2枚出す必要がある</dd>
+</dl>
+<h4>勝敗の決まり方</h4>
+<p>各プレイヤーはチップを3枚持つ。ゲームに敗北したプレイヤーは、チップを1枚失う。<br />全てのチップを失ったプレイヤーは、ゲームから脱落し、次回からのゲームに参加できない。これをプレイヤーが1人になるまで続け、最終的に残ったプレイヤーが、ゲームの勝者となる。</p>
+        </div>);
+    } else {
+        return (<div>
+            {header}
+        </div>);
+    }
+}
 
 class PlayingBoard extends React.Component<PropType, StatType> {
     private readonly connectUrl: string = "wss://demo.websocket.me/v3/1?api_key=oCdCMcMPQpbvNjUIzqtvF1d2X2okWpDQj4AwARJuAgtjhzKxVEjQU6IdCjwm&notify_self";
@@ -307,109 +296,112 @@ class PlayingBoard extends React.Component<PropType, StatType> {
             </div>);
         }
         
-        return(<div>
-{this.renderInfo()}
-{this.renderPlayers()}
-{this.renderGameStartButton()}
-{this.renderTurnPlayer()}
-{this.renderHandCards()}
-{this.renderPullOutCards()}
-        </div>);
+        return(<>
+<header className={styles.headerLayout}>
+    <div>
+        <button className={styles.copyBtn} onClick={e => this.copyClipboard(this.props.roomId)}>Copy<span className={styles.moreText}>RoomID</span></button>
+    </div>
+    <div>
+        <button className={styles.copyBtn} onClick={e => this.copyClipboard(`${window.location.protocol}//${window.location.host}${UrlMap.generatePlayingUrl(this.props.roomId)}`)}>Copy<span className={styles.moreText}>URL</span></button>
+    </div>
+</header>
+<nav className={styles.navLayout}>
+  { (this.state.turnPlayer == undefined) ? null :
+  (<div>
+    <p>{this.state.turnPlayer.name} 's turn</p>
+  </div>)
+  }
+  { (this.state.startPlayed || this.state.players.length <= 1) ? null : 
+  (<div>
+    <button className={styles.startBtn} onClick={this.startGame}>Start Game</button>
+  </div>)
+  }
+</nav>
+<div>
+  <main>
+    <section>
+        <div className={styles.playersLayout}>
+            <h3>プレイヤー</h3>
+            {this.state.startPlayed ?
+            (<ol>
+                {this.state.players.map(player => (<li key={player.id}>{player.name}</li>))}
+            </ol>) : 
+            (<ul>
+                {this.state.players.map(player => (<li key={player.id}>{player.name}</li>))}
+            </ul>)
+            }
+        </div>
+        <div className={styles.boardLayout}>
+            <div className={styles.deckLayout}>
+                <PlayCard cardIndex={-1} viewName="Neu" design={CardDesign.BACK_CARD}
+                visiblePlayerSelect={false} visibleSelectBtn={false} />
+            </div>
+            <div className={styles.cardsLayout}>
+                { (this.state.pullOutCards.length == 0) ? null :
+                (<div className={styles.fieldCards}>
+                    <ul>
+                        {this.state.pullOutCards.map((info, index) => {
+
+                            return (<li key={`pull-out-card-${index}`} style={{ zIndex: index }}>
+                            <PlayCard cardIndex={index} viewName={info.card.viewName} design={this.getCardDesign(info.card)}
+                            visiblePlayerSelect={false} visibleSelectBtn={false} />
+                            </li>);
+                        })}
+                    </ul>
+                </div>)
+                }
+            </div>
+        </div>
+        {this.renderHandCards()}
+    </section>
+  </main>
+  <aside><GameDescription /></aside>
+</div>
+        </>);
     }
 
-    private renderGameDescription(): JSX.Element {
-        return (<div>
-<h3>ゲームルール</h3>
-        </div>);
-    }
-    private renderInfo(): JSX.Element {
-        return (<div>
-            <p>roomId: {this.props.roomId}</p>
-            <p>your name is : {this.props.playerName}</p>
-        </div>)
-    }
-    private renderPlayers(): JSX.Element {
-        return (<ul>
-{this.state.players.map(player => (<li key={player.id}>{player.name}</li>))}
-        </ul>);
-    }
-    private renderGameStartButton(): JSX.Element {
-        if (this.state.startPlayed || this.state.players.length <= 1) {
-            return null;
-        } else {
-            return (<div>
-<button onClick={this.startGame}>Start Game</button>
-            </div>);
-        }
-    }
-    private renderTurnPlayer(): JSX.Element {
-        if (this.state.turnPlayer == undefined) {
-            return null;
-        } else {
-            return (<p>{this.state.turnPlayer.name} 's turn</p>);
-        }
-    }
+
     private renderHandCards(): JSX.Element {
         if (this.state.startPlayed && this.state.turnPlayer != undefined) {
             let isMyTurn: boolean = this.state.turnPlayer.id == this._player.id;
             return (<div>
 <h3>手札</h3>
-<ul>
+<ul className={styles.handCards}>
     {this.state.handCards.map((info, index) => {
         let card = info.card;
         let canPullOut: boolean = this._game.checkCanPullOut(this.state.pullOutCards.map(info => info.card), card);
-        if (card.nextPlayerOrder() == OrderCategory.Nominate) {
-            let selectedPlayer = this.state.players.find(player => player.id == info.selectNominatePlayerId);
-            return isMyTurn ? (<li key={index}>
-                <span>{card.viewName}</span>
-                <ul>
-                {this.state.players.filter(selectPlayer => selectPlayer.id != this._player.id)
-                                   .map((selectablePlayer, i) => {
-                                        let uniqueId = `player-${index}-${i}`;
-                                        let playerId = selectablePlayer.id;
-                                        return (<li key={uniqueId}>
-                                            <input type="radio" id={uniqueId} value={playerId} checked={playerId == info.selectNominatePlayerId}
-                                            name={`specifyPlayer-${index}`}
-                                            onChange={e => this.setState(prevState => ({
-                                                handCards: prevState.handCards.map((val, handIndex) => {
-                                                    if (handIndex == index) {
-                                                        val.selectNominatePlayerId = e.target.value;
-                                                    }
-                                                    return val;
-                                                })
-                                            }))
-                                            } /><label htmlFor={uniqueId}>{selectablePlayer.name}</label>
-                                        </li>);
-                                    })}
-                </ul>
-                {selectedPlayer != undefined && canPullOut ? (<button onClick={e => this.pullOutCard(index, selectedPlayer)}>pull out</button>) : null}
-            </li>) : (<li key={index}>
-                <span>{card.viewName}</span>
-            </li>);
-        } else {
-            return (<li key={index}>
-                <span>{card.viewName}</span>
-                {isMyTurn && canPullOut ? (<button onClick={e => this.pullOutCard(index)}>pull out</button>) : null}
-            </li>);
-        }
+        let canSelectPlayer: boolean = card.nextPlayerOrder() == OrderCategory.Nominate;
+        return (<li key={`handCard-${index}`}>
+        <PlayCard cardIndex={index} viewName={card.viewName} design={this.getCardDesign(card)}
+          visibleSelectBtn={isMyTurn && canPullOut} visiblePlayerSelect={isMyTurn && canSelectPlayer}
+          selectablePlayers={this.state.players.filter(selectPlayer => selectPlayer.id != this._player.id)}
+          pullOutEventFunc={this.pullOutCard} />
+        </li>);
     })}
 </ul>
-            </div>);
+            </div>)
+        }
+        return null;
+    }
+
+    private getCardDesign(card: Card): CardDesign {
+        if (card.isSpecialCard()) {
+            return card.fixedValue() ? CardDesign.ACE_CARD : CardDesign.SPECIAL_CARD;
         } else {
-            return null;
+            return 0 < Math.sign(card.value()) ? CardDesign.PLUS_CARD : CardDesign.MINUS_CARD;
         }
     }
-    private renderPullOutCards(): JSX.Element {
-        if (this.state.pullOutCards.length == 0) {
-            return null;
-        } else {
-            return (<div>
-                <h3>場札</h3>
-                <ul>
-                    {this.state.pullOutCards.map((info, index) => (<li key={`pull-out-card-${index}`}>{info.card.viewName}</li>))}
-                </ul>
-            </div>);
-        }
+
+    private copyClipboard(text: string): void {
+        let body = document.querySelector('body');
+        let temporaryCopyElement = document.createElement("textarea");
+        temporaryCopyElement.textContent = text;
+        
+        body.appendChild(temporaryCopyElement);
+        temporaryCopyElement.select();
+        document.execCommand('copy');
+        body.removeChild(temporaryCopyElement);
+        alert('copied!');
     }
 
 }

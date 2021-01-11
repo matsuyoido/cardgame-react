@@ -41,6 +41,12 @@ project(':develop') {
 		, 'ts-loader'
 		// webpackでjsとhtmlを一緒にするための設定
 		, 'html-webpack-plugin', 'script-ext-html-webpack-plugin'
+		// sass を typescript で利用する設定
+		, 'typescript-plugin-css-modules', 'typed-scss-modules'
+		// sassコンパイルするための設定
+		, 'style-loader', 'css-loader', 'sass-loader', 'node-sass'
+		// Autoprefixer
+		, 'postcss-loader', 'autoprefixer'
 	]
   }
   task setupVendor(type: NpmTask) {
@@ -67,7 +73,16 @@ project(':develop') {
   }
   
   // TODO: task setup を作り、一度に実行してもらえるように仕込む
-  
+
+  task styleBuild(type: NpxTask) {
+	  // https://github.com/skovy/typed-scss-modules
+	  command = 'tsm'
+	  args = [
+		'./../develop/src/**/*.scss'
+		, '--nameFormat', 'dashes', '--exportType', 'default'
+	  ]
+  }
+
   // package.json の scripts に "webpack_build": "webpack --mode production", を記述したのと同じこと
   task webpackBuild(type: NpxTask) {
 	command = 'webpack'

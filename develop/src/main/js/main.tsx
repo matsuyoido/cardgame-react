@@ -11,6 +11,7 @@ import SelectMenu from './_index';
 import InputName from './_enter';
 import PlayingBoard from './_playing';
 
+import PlayCard from './component/PlayCard';
 
 interface SessionAttribute {
     name: string;
@@ -34,9 +35,9 @@ class App extends React.Component<{}, SessionAttribute> {
     }
 
     render() {
-        return (
+        return (<>
 <Router history={history}>
-    <main>
+    <div>
         <Switch>
             <Route exact path="/" component={SelectMenu}></Route>
             <Route exact path={UrlMap.inputNameUrl()} render={props => <InputName setNameFunc={this.setName} {...props} />}></Route>
@@ -50,8 +51,8 @@ class App extends React.Component<{}, SessionAttribute> {
             }}></Route>
             <Route path="*" component={SelectMenu}></Route>
         </Switch>
-    </main>
-</Router>);
+    </div>
+</Router></>);
     }
 }
 

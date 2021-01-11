@@ -28,6 +28,8 @@ abstract class Card {
     public readonly value = (): number => {
         return CardCategory.Num === this._category || !isNaN(+this.viewName) ? +this.viewName : 0;
     };
+    /** 特殊カードである */
+    public readonly isSpecialCard = (): boolean => CardCategory.Special === this._category;
 
     /** 次の順番 */
     abstract nextPlayerOrder(): OrderCategory;

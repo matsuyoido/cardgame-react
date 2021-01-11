@@ -1,0 +1,108 @@
+@import './variables';
+
+
+.play-card {
+    width: 4rem;
+    height: $card-height;
+    padding-right: .5rem;
+    padding-left: .5rem;
+    margin: 0 1rem;
+    border-style: ridge;
+    background-color: #fcfcfc;
+    > p {
+        margin: 0;
+        line-height: $card-height;
+        text-align: center;
+        font-weight: bold;
+    }
+    // https://ics.media/entry/200212/
+    &.plus {
+        color: #ff584d;
+    }
+    &.minus {
+        color: #009900;
+    }
+    &.special {
+        color:#ff9900;
+    }
+    &.fixed {
+        color: #5456e4;
+    }
+    &.back {
+        background-color: #009900;
+    }
+    position: relative;
+    .right-top {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: small;
+    }
+    .left-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        font-size: small;
+    }
+
+    ~ * {
+        padding: 0;
+        margin: 0 1rem;
+        .player-select {
+            padding: 0;
+            width: 5rem;
+
+            .player-raw {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                list-style: none;
+
+                .player-name {
+                    width: 100%;
+                }
+            }
+        }
+        .pullout-btn {
+            margin-top: .5rem;
+            width: 100%;
+            cursor: pointer;
+            border: none;
+
+            position: relative;
+
+            transition: all 0.3s;
+            transform: rotateX(35deg);
+
+            border-radius: 0.25rem 0.25rem 0 0;
+            transform-style: preserve-3d;
+
+            color: #fff;
+            background: $pullout-btn-color;
+            &::after {
+              position: absolute;
+              z-index: -1;
+              content: "";
+              transition: all 0.4s;
+              top: calc(100% - 1px);
+              left: 0;
+
+              width: 100%;
+              height: 40%;
+
+              transform: rotateX(-90deg);
+              transform-origin: 0 0;
+
+              border-radius: 0 0 4px 4px;
+              background: darken($pullout-btn-color, 5%);
+            }
+            &:hover {
+              transform: rotateX(0);
+              border-radius: 0.25rem;
+              color: #fff;
+            }
+          
+        }
+
+    }
+}
