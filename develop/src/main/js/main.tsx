@@ -11,8 +11,6 @@ import SelectMenu from './_index';
 import InputName from './_enter';
 import PlayingBoard from './_playing';
 
-import PlayCard from './component/PlayCard';
-
 interface SessionAttribute {
     name: string;
 }

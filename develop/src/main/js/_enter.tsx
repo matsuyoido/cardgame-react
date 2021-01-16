@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 import UrlMap from './url';
+import styles from './../css/_index.scss';
 
 interface PropType {
     setNameFunc: Function;
@@ -39,20 +40,12 @@ export default class InputName extends React.Component<PropType, StateType> {
     }
 
     render() {
-        if (this.state.hasError) {
-            return (
-<div>
+        return (<>
+<div className={[styles.enterOverall, styles.center].join(' ')}>
     <label>Input your name: <input type="text" onChange={this.setName} ref={this.inputFocus} /></label>
+    {this.state.hasError ? null : (<Link to={UrlMap.generatePlayingUrl(this.roomId)}>Enter room</Link>)}
 </div>
-            );
-        } else {
-            return (
-<div>
-    <label>Input your name: <input type="text" onChange={this.setName} ref={this.inputFocus} /></label>
-    <Link to={UrlMap.generatePlayingUrl(this.roomId)}>Enter room</Link>
-</div>
-            );
-        }
+        </>);
     }
 
 };
