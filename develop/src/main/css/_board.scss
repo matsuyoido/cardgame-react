@@ -51,6 +51,7 @@
 
 .players-layout {
     border-bottom: black;
+    padding: 0 8px;
 }
 .board-layout {
     background-color: $board-bg-color;
@@ -122,5 +123,7 @@ $scrollbar-width: 8px;
         list-style: none;
     }
 }
-
+.description-layout {
+    padding: 0 8px;
+}
 

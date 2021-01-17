@@ -41,6 +41,7 @@ class App extends React.Component<{}, SessionAttribute> {
             <Route exact path={UrlMap.inputNameUrl()} render={props => <InputName setNameFunc={this.setName} {...props} />}></Route>
             <Route exact path={UrlMap.playingUrl()} render={props => {
                 let roomId = props.match.params[UrlMap.ROOMID_URI_VARIABLE_NAME];
+                console.info(`roomID: ${roomId}`);
                 if (this.state.name === '') {
                     return <Redirect to={UrlMap.generateInputNameUrl(roomId)} />
                 } else {

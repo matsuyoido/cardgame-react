@@ -3,6 +3,7 @@ export type Styles = {
   'cardsLayout': string;
   'copyBtn': string;
   'deckLayout': string;
+  'descriptionLayout': string;
   'fieldCards': string;
   'handCards': string;
   'headerLayout': string;

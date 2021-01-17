@@ -355,7 +355,7 @@ class PlayingBoard extends React.Component<PropType, StatType> {
         {this.renderHandCards()}
     </section>
   </main>
-  <aside><GameDescription /></aside>
+  <aside className={styles.descriptionLayout}><GameDescription /></aside>
 </div>
         </>);
     }
