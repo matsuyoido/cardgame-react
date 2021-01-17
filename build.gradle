@@ -2,105 +2,115 @@
 buildscript {
   repositories {
     maven {
-	  // gradlePluginPortal()
-	  url "https://plugins.gradle.org/m2/"
-	}
+      // gradlePluginPortal()
+      url "https://plugins.gradle.org/m2/"
+    }
   }
   dependencies {
-	// https://github.com/node-gradle/gradle-node-plugin
-	classpath "com.github.node-gradle:gradle-node-plugin:2.2.4"
+    // https://github.com/node-gradle/gradle-node-plugin
+    classpath "com.github.node-gradle:gradle-node-plugin:2.2.4"
   }
 }
 
 project(':develop') {
   apply plugin: 'com.github.node-gradle.node'
   node {
-	download = true
-	workDir = file("${projectDir}/nodejs")
-	npmWorkDir = file("${projectDir}/npm")
+    download = true
+    workDir = file("${projectDir}/nodejs")
+    npmWorkDir = file("${projectDir}/npm")
   }
   
-  task initialize(type: NpmTask) {
-	args = ['init', '-y']
+  task setupNpm(type: NpmTask) {
+    args = ['init', '-y']
   }
   task setupDevelop(type: NpmTask) {
-	args = [ 'install', 
-		// --save-dev でも -D でもOK( devDependencies に追加 )
-		'--save-dev'
-		// babel設定
-		, '@babel/core', '@babel/preset-env'
-		// babelにてReact変換設定
-		, '@babel/preset-react'
-		// babelにてTypeScript変換設定
-		, '@babel/preset-typescript'
-		// webpackの設定
-		, 'webpack', 'webpack-cli'
-		// webpackでbabel利用するための設定
-		, 'babel-loader'
-		// webpackでTypeScriptを一つにまとめるための設定
-		, 'ts-loader'
-		// webpackでjsとhtmlを一緒にするための設定
-		, 'html-webpack-plugin', 'script-ext-html-webpack-plugin'
-		// sass を typescript で利用する設定
-		, 'typescript-plugin-css-modules', 'typed-scss-modules'
-		// sassコンパイルするための設定
-		, 'style-loader', 'css-loader', 'sass-loader', 'node-sass'
-		// Autoprefixer
-		, 'postcss-loader', 'autoprefixer'
-	]
+    args = [ 'install', 
+      // --save-dev でも -D でもOK( devDependencies に追加 )
+      '--save-dev'
+      // babel設定
+      , '@babel/core', '@babel/preset-env'
+      // babelにてReact変換設定
+      , '@babel/preset-react'
+      // babelにてTypeScript変換設定
+      , '@babel/preset-typescript'
+      // webpackの設定
+      , 'webpack', 'webpack-cli'
+      // webpackでbabel利用するための設定
+      , 'babel-loader'
+      // webpackでTypeScriptを一つにまとめるための設定
+      , 'ts-loader'
+      // webpackでjsとhtmlを一緒にするための設定
+      , 'html-webpack-plugin', 'script-ext-html-webpack-plugin'
+      // sass を typescript で利用する設定
+      , 'typescript-plugin-css-modules', 'typed-scss-modules'
+      // sassコンパイルするための設定
+      , 'style-loader', 'css-loader', 'sass-loader', 'node-sass'
+      // Autoprefixer
+      , 'postcss-loader', 'autoprefixer'
+    ]
   }
   task setupVendor(type: NpmTask) {
-	args = [ 'install'
-		// --save でも -S でもOK( dependencies に追加 )
-		, '--save'
-		// react実装依存関係
-		, 'react', 'react-dom'
-		// reactでルーティング(SPAのための画面遷移のような切り替え)を実現するため
-		, 'react-router-dom', 'react-router'
-		// TypeScript実装依存関係
-		, 'typescript'
-		// TypeScript用の型定義ファイル
-		, '@types/react', '@types/react-dom', '@types/react-router'
-		// deepCopyをするため
-		, 'lodash'
-		// UUID生成のため
-		, 'uuid'
-		// UUIDでも短めのやつでOKのため
-		, 'shortid'
-		// "WebSocketを利用するため?(不要そう)"
-		, "ws"
-	]
+    args = [ 'install'
+      // --save でも -S でもOK( dependencies に追加 )
+      , '--save'
+      // react実装依存関係
+      , 'react', 'react-dom'
+      // reactでルーティング(SPAのための画面遷移のような切り替え)を実現するため
+      , 'react-router-dom', 'react-router'
+      // TypeScript実装依存関係
+      , 'typescript'
+      // TypeScript用の型定義ファイル
+      , '@types/react', '@types/react-dom', '@types/react-router'
+      // deepCopyをするため
+      , 'lodash'
+      // UUID生成のため
+      , 'uuid'
+      // UUIDでも短めのやつでOKのため
+      , 'shortid'
+      // "WebSocketを利用するため?(不要そう)"
+      , "ws"
+    ]
   }
-  
-  // TODO: task setup を作り、一度に実行してもらえるように仕込む
 
-  task styleBuild(type: NpxTask) {
-	  // https://github.com/skovy/typed-scss-modules
-	  command = 'tsm'
-	  args = [
-		'./../develop/src/**/*.scss'
-		, '--nameFormat', 'dashes', '--exportType', 'default'
-	  ]
+  task buildStyle(type: NpxTask) {
+    // https://github.com/skovy/typed-scss-modules
+    command = 'tsm'
+    args = [
+      './../develop/src/**/*.scss'
+      , '--nameFormat', 'dashes', '--exportType', 'default'
+    ]
   }
 
   // package.json の scripts に "webpack_build": "webpack --mode production", を記述したのと同じこと
-  task webpackBuild(type: NpxTask) {
-	command = 'webpack'
-	args = [
-		'--mode' /*, 'production'*/ ,'development'
-	]
-  }
-  // TODO: ↓は本当にwatch できるか確認
-  task webpackWatch(type: NpxTask) {
-	command = 'webpack'
-	args = [
-		'--mode', 'development', '--watch', '--color', '--progress'
-	]
+  task buildWebpack(type: NpxTask) {
+    command = 'webpack'
+    args = [
+      '--mode', 'production'
+    ]
   }
 
-	task testServer(type: NodeTask) {
-		script = file("${projectDir}/src/test/server.js")
-	}
+  setupDevelop.shouldRunAfter setupNpm
+  setupVendor.shouldRunAfter setupNpm
+  buildWebpack.shouldRunAfter buildStyle
+  buildStyle.shouldRunAfter setupVendor
+  buildStyle.shouldRunAfter setupDevelop
+  task build(dependsOn: [buildWebpack, buildStyle, setupVendor, setupDevelop, setupNpm]) {
+    group = 'build setup'
+    description = 'Build webpack files'
+  }
+
+
+  // TODO: ↓は本当にwatch できるか確認
+  task webpackWatch(type: NpxTask) {
+  command = 'webpack'
+    args = [
+      '--mode', 'development', '--watch', '--color', '--progress'
+    ]
+  }
+
+  task testServer(type: NodeTask) {
+    script = file("${projectDir}/src/test/server.js")
+  }
 
 }
 

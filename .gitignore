@@ -7,3 +7,4 @@ build
 # Ignore development dependencies
 **/node_modules/**
 **/nodejs/**
+**/dist/**
