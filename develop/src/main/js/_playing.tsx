@@ -107,7 +107,7 @@ class PlayingBoard extends React.Component<PropType, StatType> {
         };
         this.server.addEventListener('message', event => {
             let data = JSON.parse(event.data);
-            // console.log(data);
+            console.log(data);
             if (this._roomId != data.roomId) {
                 return;
             }
