@@ -95,7 +95,7 @@ return isDev ?
 			template: "./src/main/index.html",
 			minify: false,
 			inject: true,
-			filename: './../../public/index.html'
+			filename: './../../docs/index.html'
 		}),
 		new ScriptExtHtmlWebpackPlugin({
 			inline: [
