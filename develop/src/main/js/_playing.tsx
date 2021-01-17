@@ -76,7 +76,8 @@ const GameDescription = (): JSX.Element => {
 }
 
 class PlayingBoard extends React.Component<PropType, StatType> {
-    private readonly connectUrl: string = "wss://demo.websocket.me/v3/1?api_key=oCdCMcMPQpbvNjUIzqtvF1d2X2okWpDQj4AwARJuAgtjhzKxVEjQU6IdCjwm&notify_self";
+    private readonly connectUrl: string = "wss://echo.websocket.org/";
+    // private readonly connectUrl: string = "wss://demo.websocket.me/v3/1?api_key=oCdCMcMPQpbvNjUIzqtvF1d2X2okWpDQj4AwARJuAgtjhzKxVEjQU6IdCjwm&notify_self";
     private server: WebSocket;
     private _game: GameRule;
 
