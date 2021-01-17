@@ -96,7 +96,11 @@ project(':develop') {
   buildStyle.shouldRunAfter setupDevelop
   task build(dependsOn: [buildWebpack, buildStyle, setupVendor, setupDevelop, setupNpm]) {
     group = 'build setup'
-    description = 'Build webpack files'
+    description = 'setup all environment & Build webpack application file.'
+  }
+  task buildApp(dependsOn: [buildWebpack, buildStyle]) {
+    group = 'build app'
+    description = 'Build webpack application file.'
   }
 
 

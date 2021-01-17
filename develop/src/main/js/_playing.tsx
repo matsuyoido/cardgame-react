@@ -76,8 +76,8 @@ const GameDescription = (): JSX.Element => {
 }
 
 class PlayingBoard extends React.Component<PropType, StatType> {
-    private readonly connectUrl: string = "wss://echo.websocket.org/";
-    // private readonly connectUrl: string = "wss://demo.websocket.me/v3/1?api_key=oCdCMcMPQpbvNjUIzqtvF1d2X2okWpDQj4AwARJuAgtjhzKxVEjQU6IdCjwm&notify_self";
+    private readonly prodConnectUrl: string = "wss://us-nyc-1.websocket.me/v3/1?api_key=8KhojaoOEF6pdL635Pvvijp4xSqOmdkdQ6dAUXAf&notify_self";
+    private readonly connectUrl: string = "wss://demo.websocket.me/v3/1?api_key=oCdCMcMPQpbvNjUIzqtvF1d2X2okWpDQj4AwARJuAgtjhzKxVEjQU6IdCjwm&notify_self";
     private server: WebSocket;
     private _game: GameRule;
 
@@ -99,7 +99,7 @@ class PlayingBoard extends React.Component<PropType, StatType> {
             pullOutCards: []
         };
         this._roomId = this.props.roomId;
-        this.server = new WebSocket(this.connectUrl);
+        this.server = new WebSocket(window.location.hostname == 'matsuyoido.github.io' ? this.prodConnectUrl : this.connectUrl);
         this.server.onopen = event => {
             this.setState({
                 connected: true
@@ -108,7 +108,7 @@ class PlayingBoard extends React.Component<PropType, StatType> {
         };
         this.server.addEventListener('message', event => {
             let data = JSON.parse(event.data);
-            console.log(data);
+            // console.log(data);
             if (this._roomId != data.roomId) {
                 return;
             }
