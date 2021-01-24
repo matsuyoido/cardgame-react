@@ -1,0 +1,209 @@
+@import './variables';
+@import './utilities';
+
+#index {
+    width: 100vw;
+    height: 100vh;
+    max-width: 1600px;
+    margin: auto;
+    > section {
+        height: 50vh;
+        width: 100%;
+        display: table;
+        text-align: center;
+        > * {
+            display: table-cell;
+            vertical-align: middle;
+        }
+        &:nth-child(odd) {
+            background-color: darken(lighten($main-color, 100%), 10%);
+        }
+        &:nth-child(even) {
+            border-left: darken(lighten($main-color, 100%), 13%);
+            background-color: darken(lighten($main-color, 100%), 15%);
+        }
+    }
+    @include ifD(tab) {
+        display: flex;
+        > section {
+            height: 100vh;
+            width: 50%;
+            > * {
+                height: 100%;
+            }
+            &:nth-child(odd) {
+                > * {
+                    padding-bottom: calc(100% - 1rem);
+                }
+            }
+            &:nth-child(even) {
+                > * {
+                    padding-top: calc(100% - 1rem);
+                }
+            }
+        }
+    }
+    > nav {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%);
+        -webkit-transform: translateY(-50%) translateX(-50%);
+        // 縦 : 横 = 1 : 1.618
+        min-height: 20vh;
+        min-width: 33.36vh;
+
+        background-color: #fafafa;
+        z-index: 10;
+        border: 1px solid;
+        padding: 1rem;
+        font-size: 0.5rem;
+        @include ifD(tab) {
+            font-size: initial;
+        }
+        aside {
+            margin-top: 1rem;
+        }
+    }
+}
+
+#enter {
+    width:100vw;
+    height:100vh;
+    overflow: hidden;
+    // background: linear-gradient(to left, $main-color, lighten($main-color, 30%));
+    .center {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .invitation-card {
+        display: flex;
+        flex-direction: column;
+        .card-title, .card-body, .card-action {
+            padding: .8rem;
+            padding-bottom: 0;
+
+            &:last-child {
+                padding-bottom: .8rem;
+            }
+        }
+        .card-title {
+            text-align: center;
+        }
+        .card-body {
+            flex: 1 1 auto;
+        }
+        .card-action {
+            text-align: center;
+        }
+    }
+}
+
+#loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#playing {
+
+    > header {
+        display: flex;
+        justify-content: space-around;
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+    }
+    > nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+    }
+    > #main {
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+
+        > main {
+            padding-bottom: 1rem;
+        }
+        > aside {
+            padding-bottom: 1rem;
+            > * {
+                padding: 0 1rem;
+            }
+            h1, h2, h3, h4, h5 {
+                margin-top: .8rem;
+                margin-bottom: .5rem;
+            }
+            ul, ol {
+                margin-top: 0;
+            }
+        }
+
+        #players {
+            padding: 0 1rem;
+            margin-bottom: 1rem;
+        }
+        #board {
+            background-color: $board-bg-color;
+            height: 25vh;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            #deck {
+                width: 50%;
+                > * {
+                    margin-left: auto;
+                }
+            }
+            #fields {
+                width: 50%;
+            }
+        }
+        #hands {
+            padding: 0 1rem;
+            margin-bottom: 1rem;
+            ul {
+                display: flex;
+                justify-content: space-around;
+                padding-inline-start: unset;
+                li {
+                    list-style: none;
+                }
+            }
+        }
+    }
+
+    .start-btn {
+        background-color: #eb6100;
+        box-shadow: 0 5px 0 #f56500;
+        &:hover {
+            transform: translate(0, 3px);
+            box-shadow: 0 2px 0 #f56500;
+        }
+        cursor: pointer;
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        padding: 0;
+        border: none;
+    }
+
+}
+
+
+dl {
+    text-align: start;
+    dt {
+        font-weight: bold;
+    }
+    dd {
+        margin-left: 1rem;
+    }
+}

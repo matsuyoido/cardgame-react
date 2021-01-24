@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 import UrlMap from './url';
-import styles from './../css/_index.scss';
+import styles from './../css/_pages.scss';
 
 interface PropType {
     setNameFunc: Function;
@@ -41,9 +41,20 @@ export default class InputName extends React.Component<PropType, StateType> {
 
     render() {
         return (<>
-<div className={[styles.enterOverall, styles.center].join(' ')}>
-    <label>Input your name: <input type="text" onChange={this.setName} ref={this.inputFocus} /></label>
-    {this.state.hasError ? null : (<Link to={UrlMap.generatePlayingUrl(this.roomId)}>Enter room</Link>)}
+<div id={styles.enter}>
+    <div className={styles.center}>
+        <div className={[styles.paper, styles.invitationCard].join(' ')}>
+            <div className={styles.cardTitle}>
+                <label htmlFor='userInput'>Input your name</label>
+            </div>
+            <div className={styles.cardBody}>
+                <input id="userName" type="text" onChange={this.setName} ref={this.inputFocus} />
+            </div>
+            <div className={styles.cardAction}>
+                {this.state.hasError ? <p>Enter room</p> : (<Link to={UrlMap.generatePlayingUrl(this.roomId)}>Enter room</Link>)}
+            </div>
+        </div>
+    </div>
 </div>
         </>);
     }

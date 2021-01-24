@@ -1,6 +1,39 @@
 
-$card-height: 7.5rem;
+$card-width: 6rem;
+$card-height: 8.5rem;
 $main-color: #16e975;
 $board-bg-color: #006600;
 $pullout-btn-color: $board-bg-color;
 
+// モバイルファーストのため、デフォルトをSPとする
+$breakpoints: (
+  'tab': 'screen and (min-width: 481px)',
+  'pc': 'screen and (min-width: 769px)'
+) !default;
+
+/* #region function */
+
+/// Usage レスポンシブ対応
+/// media query の略で mq が一般的だが直感的に分かり辛いので、 if device tab... みたいなイメージで
+/// @include ifD(tab) {
+/// }
+@mixin ifD($breakpoint) {
+    @media #{map-get($breakpoints, $breakpoint)} {
+      @content;
+    }
+}
+
+/// Usage keyframe対応
+@mixin keyframes($animation-name) {
+  @-webkit-keyframes #{$animation-name} {
+    @content;
+  }
+  @-moz-keyframes #{$animation-name} {
+    @content;
+  }  
+  @keyframes #{$animation-name} {
+    @content;
+  }
+}
+
+/* #endregion */

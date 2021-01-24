@@ -81,7 +81,7 @@ class TurnCard extends Card {
         return 1;
     }
     skipMyTurn(): boolean {
-        return false;
+        return true;
     }
     fixedValue(): boolean {
         return false;
@@ -103,7 +103,7 @@ class ShotCard extends Card {
         return 1;
     }
     skipMyTurn(): boolean {
-        return false;
+        return true;
     }
     fixedValue(): boolean {
         return false;

@@ -35,7 +35,6 @@ class App extends React.Component<{}, SessionAttribute> {
     render() {
         return (<>
 <Router history={history}>
-    <div>
         <Switch>
             <Route exact path="/" component={SelectMenu}></Route>
             <Route exact path={UrlMap.inputNameUrl()} render={props => <InputName setNameFunc={this.setName} {...props} />}></Route>
@@ -49,7 +48,6 @@ class App extends React.Component<{}, SessionAttribute> {
             }}></Route>
             <Route path="*" component={SelectMenu}></Route>
         </Switch>
-    </div>
 </Router></>);
     }
 }

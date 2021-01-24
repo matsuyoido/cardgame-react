@@ -1,8 +1,8 @@
-@import './variables';
+@import './../variables';
 
 
 .play-card {
-    width: 4rem;
+    width: $card-width;
     height: $card-height;
     padding-right: .5rem;
     padding-left: .5rem;
@@ -72,9 +72,9 @@
             position: relative;
 
             transition: all 0.3s;
-            transform: rotateX(35deg);
+            transform: rotateX(0);
+            border-radius: 0.25rem;
 
-            border-radius: 0.25rem 0.25rem 0 0;
             transform-style: preserve-3d;
 
             color: #fff;
@@ -97,8 +97,8 @@
               background: darken($pullout-btn-color, 5%);
             }
             &:hover {
-              transform: rotateX(0);
-              border-radius: 0.25rem;
+              transform: rotateX(35deg);
+              border-radius: 0.25rem 0.25rem 0 0;
               color: #fff;
             }
           

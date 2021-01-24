@@ -67,6 +67,7 @@ project(':develop') {
       , 'uuid'
       // UUIDでも短めのやつでOKのため
       , 'shortid'
+      , 'sweetalert2', 'sweetalert2-react-content'
       // "WebSocketを利用するため?(不要そう)"
       , "ws"
     ]
@@ -106,13 +107,20 @@ project(':develop') {
 
   // TODO: ↓は本当にwatch できるか確認
   task webpackWatch(type: NpxTask) {
-  command = 'webpack'
+    command = 'webpack'
     args = [
       '--mode', 'development', '--watch', '--color', '--progress'
     ]
   }
 
-  task testServer(type: NodeTask) {
+  task _buildDev(type: NpxTask) {
+    dependsOn buildStyle
+    command = 'webpack'
+    args = [
+      '--mode', 'development'
+    ]
+  }
+  task testServer(dependsOn: [_buildDev], type: NodeTask) {
     script = file("${projectDir}/src/test/server.js")
   }
 

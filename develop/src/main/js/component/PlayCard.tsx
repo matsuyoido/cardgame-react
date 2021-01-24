@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import * as shortid from 'shortid';
 import { Card } from '../model/card';
 import { Player } from '../model/player';
-import styles from './../../css/_playCard.scss';
+import styles from '../../css/component/_playCard.scss';
 
 // カードデザイン
 enum CardDesign {

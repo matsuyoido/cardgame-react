@@ -21,8 +21,13 @@ function getType(_url) {
 }
 const server = http.createServer(function (req, res) {
     let filePath = req.url.endsWith("/") ? req.url + "index.html" : req.url;
-    let url = folderPath + filePath;
-    url = folderPath + '/index.html'; // どんなURLが来たとしてもindexに飛ぶ
+    let url = folderPath;
+    if (filePath.endsWith('js')) {
+      let paths = filePath.split('/');
+      url += '/' + paths[paths.length - 1];
+    } else {
+      url += '/index.html'; // どんなURLが来たとしてもindexに飛ぶ
+    }
     if (fs.existsSync(url)) {
       fs.readFile(url, (err, data) => {
         if (!err) {

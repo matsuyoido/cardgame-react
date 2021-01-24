@@ -28,28 +28,28 @@ class GameRule {
 
     sortPlayers(players: Player[], boardCards: Card[], card: Card, nextPlayerId: string): Player[] {
         if (card.skipMyTurn()) {
-            return this.moveLeft(players);
+            if (OrderCategory.Next == card.nextPlayerOrder()) {
+                return this.moveLeft(players);
+            } else if (OrderCategory.Previous == card.nextPlayerOrder()) {
+                return this.moveReverse(players);
+            } else {
+                let moveCount = players.length;
+                let sortedPlayers: Player[] = players.slice();
+                do {
+                    sortedPlayers = this.moveLeft(sortedPlayers);
+                    moveCount--; // 無限ループ防止
+                } while(sortedPlayers[0].id != nextPlayerId && 0 < moveCount);
+                if (moveCount < 0) {
+                    alert('error.');
+                }
+                return sortedPlayers;
+            }
         }
         let previousCard = this.getPreviousEffectCard(boardCards);
         if (previousCard != undefined && previousCard.nextPlayerPullOutCount() == 2) {
             return players;
         }
-        if (OrderCategory.Next == card.nextPlayerOrder()) {
-            return this.moveLeft(players);
-        } else if (OrderCategory.Previous == card.nextPlayerOrder()) {
-            return this.moveReverse(players);
-        } else {
-            let moveCount = players.length;
-            let sortedPlayers: Player[] = players.slice();
-            do {
-                sortedPlayers = this.moveLeft(sortedPlayers);
-                moveCount--; // 無限ループ防止
-            } while(sortedPlayers[0].id != nextPlayerId && 0 < moveCount);
-            if (moveCount < 0) {
-                alert('error.');
-            }
-            return sortedPlayers;
-        }
+        return this.moveLeft(players);
     }
 
     private getPreviousEffectCard(cards: Card[], index = -1) {
@@ -68,11 +68,6 @@ class GameRule {
         return [...players.slice(1), players[0]];
     }
     private moveReverse(players: Player[]): Player[] {
-        // 1 , 2, 3
-        // 
-        console.log(players);
-        console.log([...players.slice().reverse()]);
-        console.log([...players.slice(1).reverse(), players[0]]);
         return [...players.slice().reverse()];
     }
 

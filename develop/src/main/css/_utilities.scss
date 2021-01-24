@@ -1,0 +1,194 @@
+@import './variables';
+
+
+.text-center {
+    text-align: center;
+}
+.d-text-center {
+    display: block;
+    text-align: center;
+}
+
+.d-transition {
+    cursor: pointer;
+    * {
+        text-decoration: none;
+        color: #000;
+    }
+    &:hover {
+        opacity: 0.5;
+    }
+}
+.hover {
+    opacity: 0.5;
+}
+
+
+.paper {
+    padding: 1rem;
+    border: 1px solid $main-color;
+    background: darken(lighten($main-color, 100%), 2%);
+    border-radius: 2px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    position: relative;
+    &::before, &::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 1px solid $main-color;
+        background: darken(lighten($main-color, 100%), 2%);
+        border-radius: 2px;
+        box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        z-index: -1;
+
+        position:absolute;
+        left: 0;
+        top: 0;
+    }
+    &::before {
+        transform: rotate(-5deg);
+        -webkit-transform: rotate(-5deg);
+    }
+    &::after {
+        transform: rotate(5deg);
+        -webkit-transform: rotate(5deg);
+    }
+}
+
+
+$btn-color: darken($main-color, 15%);
+.btn {
+    // normalize
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+
+    text-align: center;
+
+    background-color: transparent;
+    border: 1px solid $btn-color;
+    border-radius: .25rem;
+    color: $btn-color;
+    transition: background .2s, border .2s, box-shadow .2s, color .2s;
+
+    &:focus, &:hover {
+        background-color: $btn-color;
+        border-color: darken($btn-color, 5%);
+        color: #fff;
+    }
+    &:active {
+        background-color: $btn-color;
+        border-color: darken($btn-color, 5%);
+        color: #fff;
+        box-shadow: 0 0 0 2px rgba($btn-color, .5);
+    }
+}
+
+$scrollbar-width: 8px;
+.scrolls {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    margin-top: $scrollbar-width + 3px;
+    &::-webkit-scrollbar {
+        height: $scrollbar-width;
+    }
+    &::-webkit-scrollbar-track {
+        border-radius: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: darken($board-bg-color, 5%);
+    }
+    &:hover {
+        margin-top: auto;
+        ul {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            li {
+                margin-top: auto;
+                position: static !important;
+            }
+        }
+    }
+    ul {
+        position: relative;
+        padding-left: 0;
+        margin: 0;
+        &::before {
+            content: "";
+            display: block;
+            // boarderの長さ: 6px
+            padding-top: calc( #{$card-height} + 6px);
+        }
+
+        li {
+            list-style: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            transition-timing-function: linear;
+        }
+    }
+}
+
+// https://projects.lukehaas.me/css-loaders/
+.loader {
+    color: $main-color;
+    font-size: 10px;
+    margin: 80px auto;
+    position: relative;
+    text-indent: -9999em;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+
+    &,
+    &::before,
+    &::after {
+      border-radius: 50%;
+      width: 2.5em;
+      height: 2.5em;
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+      -webkit-animation:loader 1.8s infinite ease-in-out;
+      animation:loader 1.8s infinite ease-in-out;
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+    }
+
+    &:before {
+      left: -3.5em;
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
+    }
+
+    &:after {
+      left: 3.5em;
+    }
+}
+
+@include keyframes(loader) {
+    0%,
+    80%,
+    100% {
+      box-shadow:0 2.5em 0 -1.3em;
+    }
+    40% {
+      box-shadow:0 2.5em 0 0;
+    }
+}
