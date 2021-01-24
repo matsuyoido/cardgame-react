@@ -1,6 +1,10 @@
 @import './variables';
 @import './utilities';
 
+body {
+    background-color: $bg-color;
+}
+
 #index {
     width: 100vw;
     height: 100vh;
@@ -15,12 +19,22 @@
             display: table-cell;
             vertical-align: middle;
         }
-        &:nth-child(odd) {
+        &:first-child {
             background-color: darken(lighten($main-color, 100%), 10%);
         }
-        &:nth-child(even) {
-            border-left: darken(lighten($main-color, 100%), 13%);
+        &:last-child {
+            border-top: darken(lighten($main-color, 100%), 13%);
             background-color: darken(lighten($main-color, 100%), 15%);
+        }
+        @include ifD(tab) {
+            &:first-child {
+                background: linear-gradient(to left, darken(lighten($main-color, 100%), 10%), $bg-color);
+            }
+            &:last-child {
+                border-top: none;
+                border-left: darken(lighten($main-color, 100%), 13%);
+                background: linear-gradient(to right, darken(lighten($main-color, 100%), 15%), $bg-color);
+            }
         }
     }
     @include ifD(tab) {
@@ -31,12 +45,12 @@
             > * {
                 height: 100%;
             }
-            &:nth-child(odd) {
+            &:nth-child(odd), &:first-child {
                 > * {
                     padding-bottom: calc(100% - 1rem);
                 }
             }
-            &:nth-child(even) {
+            &:nth-child(even), &:last-child {
                 > * {
                     padding-top: calc(100% - 1rem);
                 }
@@ -53,7 +67,7 @@
         min-height: 20vh;
         min-width: 33.36vh;
 
-        background-color: #fafafa;
+        background-color: $bg-color;
         z-index: 10;
         border: 1px solid;
         padding: 1rem;
@@ -71,7 +85,6 @@
     width:100vw;
     height:100vh;
     overflow: hidden;
-    // background: linear-gradient(to left, $main-color, lighten($main-color, 30%));
     .center {
         height: 100%;
         display: flex;

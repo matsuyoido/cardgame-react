@@ -27,6 +27,17 @@ export default withRouter(class SelectMenu extends React.Component<RouteComponen
             </div>
         </Link>
     </section>
+    <nav>
+        <div className={styles.textCenter}>
+            <h3>Card Game</h3>
+            <p>合計が101を超えたら負け.</p>
+            <small>Lose when the total exceeds 101.</small>
+        </div>
+        <aside>
+            <p><a href="https://shop.neu-icarus.com/items/192061">neu</a> のルールとカードの種類を参考にさせていただきました。</p>
+            <p>よろしければ、実際のゲームをご購入いただき、大切な方とお楽しみ下さい。</p>
+        </aside>
+    </nav>
     <section className={styles.dTransition} onTouchStart={this.hoverDecoration} onTouchEnd={this.hoverRemoveDecoration}>
         <div onClick={e => swal.fire({
             title: 'Input RoomID',
@@ -51,17 +62,6 @@ export default withRouter(class SelectMenu extends React.Component<RouteComponen
             <h3>Enter room</h3>
         </div>
     </section>
-    <nav>
-        <div className={styles.textCenter}>
-            <h3>Card Game</h3>
-            <p>合計が101を超えたら負け.</p>
-            <small>Lose when the total exceeds 101.</small>
-        </div>
-        <aside>
-            <p><a href="https://shop.neu-icarus.com/items/192061">neu</a> のルールとカードの種類を参考にさせていただきました。</p>
-            <p>よろしければ、実際のゲームをご購入いただき、大切な方とお楽しみ下さい。</p>
-        </aside>
-    </nav>
 </div>
         </>);
     }
