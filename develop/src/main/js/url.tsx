@@ -3,7 +3,7 @@ export default class UrlMap {
     private constructor() {}
 
     static readonly ROOMID_PARAM_NAME = 'roomID';
-    static readonly REPOSITORY_PATH = '/neu-react';
+    static readonly REPOSITORY_PATH = '/cardgame-react';
 
     static inputNameUrl(): string {
         return UrlMap.REPOSITORY_PATH + '/enter';
