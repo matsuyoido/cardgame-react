@@ -251,9 +251,18 @@ class PlayingBoard extends React.Component<PropType, StatType> {
         window.onbeforeunload = () => {
             this.exitRoom();
         };
+        window.onclose = () => {
+            this.exitRoom();
+        };
+        window.onunload = () => {
+            this.exitRoom();
+        };
+        // onpagehide もあるが、別タブに切り替えると抜けることになるので対象外にする
     }
     componentWillUnmount() {
         window.onbeforeunload = null;
+        window.onclose = null;
+        window.onunload = null;
         this.exitRoom();
     }
 
@@ -287,6 +296,7 @@ class PlayingBoard extends React.Component<PropType, StatType> {
     <button type="button" className={styles.btn} onClick={e => swal.fire({
         title: 'Copy to Clipboard',
         html: (<>
+        <p>RoomID: {this.props.roomId}</p>
         <div>
             <button className={['swal2-styled', styles.btn].join(' ')} onClick={e => {
                 this.copyClipboard(this.props.roomId);
