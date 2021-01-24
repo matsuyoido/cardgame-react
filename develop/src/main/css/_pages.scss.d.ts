@@ -20,8 +20,11 @@ export type Styles = {
   'paper': string;
   'players': string;
   'playing': string;
+  'reset': string;
   'scrolls': string;
+  'start': string;
   'startBtn': string;
+  'switchBtn': string;
   'textCenter': string;
 }
 

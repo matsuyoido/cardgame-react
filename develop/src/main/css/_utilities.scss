@@ -90,6 +90,26 @@ $btn-color: darken($main-color, 15%);
     }
 }
 
+.switch-btn {
+    cursor: pointer;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    padding: 0;
+    border: none;
+
+    @each $name, $color in $switch-btn-colors {
+        &.#{$name} {
+            background-color: $color;
+            box-shadow: 0 5px 0 darken($color, 5%);
+            &:hover {
+                box-shadow: 0 2px 0 darken($color, 5%);
+                transform: translate(0, 3px);
+            }
+        }
+    }
+}
+
 $scrollbar-width: 8px;
 .scrolls {
     overflow-x: scroll;

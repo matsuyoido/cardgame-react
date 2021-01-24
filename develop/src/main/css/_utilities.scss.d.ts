@@ -5,7 +5,10 @@ export type Styles = {
   'hover': string;
   'loader': string;
   'paper': string;
+  'reset': string;
   'scrolls': string;
+  'start': string;
+  'switchBtn': string;
   'textCenter': string;
 }
 

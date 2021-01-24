@@ -179,11 +179,29 @@ class PlayingBoard extends React.Component<PropType, StatType> {
                         pullOutCards: []
                     });
                 }
+            } else if (action == 'resetGame') {
+                let doResetPlayer = this.state.players.find(player => player.id == data.playerId);
+                swal.fire({
+                    title: 'Game Reset',
+                    timer: 5000,
+                    timerProgressBar: true,
+                    icon: 'warning',
+                    text: `by ${doResetPlayer.name}`
+                });
+                this._sum = 0;
+                this._player.renounceHand();
+                this.setState({
+                    startPlayed: false,
+                    handCards: [],
+                    turnPlayer: undefined,
+                    pullOutCards: []
+                });
             }
         });
 
         this.startGame = this.startGame.bind(this);
         this.pullOutCard = this.pullOutCard.bind(this);
+        this.resetGame = this.resetGame.bind(this);
     }
 
     private join(roomId: string, playerName: string) {
@@ -210,6 +228,13 @@ class PlayingBoard extends React.Component<PropType, StatType> {
             playerId: this._player.id
         }));
         this.server.close();
+    }
+    private resetGame() {
+        this.server.send(JSON.stringify({
+            roomId: this._roomId,
+            action: 'resetGame',
+            playerId: this._player.id
+        }));
     }
 
     startGame() {
@@ -352,14 +377,17 @@ class PlayingBoard extends React.Component<PropType, StatType> {
 
     private renderNavigation(): JSX.Element {
         return (<>
-{ (this.state.turnPlayer == undefined) ? null :
-(<div>
+{ (this.state.turnPlayer == undefined) ? null : (<>
+<div>
     <p>{this.state.turnPlayer.name} 's turn</p>
-</div>)
-}
+</div>
+<div>
+    <button type="button" className={[styles.switchBtn, styles.reset].join(' ')} onClick={this.resetGame}>Reset Game</button>
+</div>
+  </>)}
 { (this.state.startPlayed || this.state.players.length <= 1) ? null : 
 (<div>
-    <button className={styles.startBtn} onClick={this.startGame}>Start Game</button>
+    <button className={[styles.switchBtn, styles.start].join(' ')} onClick={this.startGame}>Start Game</button>
 </div>)
 }
         </>);
