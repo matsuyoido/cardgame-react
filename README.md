@@ -21,7 +21,7 @@ React + WebSocket (+ TypeScript + SCSS + Webpack)
 
 ## Sample URL
 
-https://matsuyoido.github.io/neu-react
+https://matsuyoido.github.io/cardgame-react
 
 ※ 全てのルールを再現したわけではなく、サンプルとして1ゲーム遊ぶことができる仕様となっています。
 
